@@ -1,0 +1,71 @@
+//IsEulerian
+
+		var isEulerian = true;
+
+	
+		var CONNECTED = true;
+		var visited = new Array(10,false);
+		while (CONNECTED === true) {
+			for (var i = 0; i < nodes.length; i++) 
+			{
+				for (var j = 0; j < nodes.length; j++) visited[j] = false;
+				for (var k = 0; k < nodes.length; k++) 
+				{
+					if (k !== i) 
+					{
+						dfs(nodes[k].id,nodes[i].id);
+						if (visited[nodes[k].id] === false) CONNECTED = false;
+					}
+				}
+			}
+		}
+
+
+
+		if (UNDIRECTED === false || IsTree === true) isEulerian = false
+		else if (CONNECTED === false) isEulerian = false
+		else {
+			var oddDegree = 0;
+			for (var i = 0; i < nodes.length; i++)
+			{
+				var degree = AdjList[i].length;
+				if (degree%2 !== 0) oddDegree += 1;
+			}	
+
+			if ((oddDegree !== 0)||(oddDegree !== 2)) {
+				isEulerian = false;
+			}
+		}
+
+		if (isEulerian === true) d3.select("#isEulerian").text(" : Yes");
+		else d3.select("#isEulerian").text(" : No");
+
+		
+		function isConnected()
+		{
+			var Connected = true;
+			var tempVisited = new Array(10,false);
+		
+			dfsCheck(nodes[0].id,nodes[0].id);
+
+			function dfsCheck(u,v)
+			{
+				if (u === v) {}
+				else tempVisited[v] = true;
+				
+				for (var k = 0; k < AdjList[v].length; k++)
+					if (tempVisited[AdjList[v][k]] === false) dfsCheck(v,AdjList[v][k]);
+
+				
+			}
+
+			for (var i = 0; i < nodes.length; i++)
+			{
+				if (tempVisited[i] === false) {
+					Connected = false;
+					break;
+
+			}
+
+			return Connected;
+		}
